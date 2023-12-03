@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://o5y1frrf2get"]
+
+[ext_resource type="Texture2D" uid="uid://dt1vjnfo4svcd" path="res://icon.svg" id="1_0borb"]
+[ext_resource type="Script" path="res://spinner.gd" id="1_jvbul"]
+
+[node name="Spinner" type="Node2D"]
+script = ExtResource("1_jvbul")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect"]
+layout_mode = 0
+offset_right = 581.0
+offset_bottom = 128.0
+texture = ExtResource("1_0borb")
+
+[node name="Area2D" type="Area2D" parent="TextureRect/TextureRect"]
+position = Vector2(575, 57)
+
+[node name="Line2D" type="Line2D" parent="TextureRect/TextureRect/Area2D"]
+position = Vector2(-1, 10)
+texture = ExtResource("1_0borb")
