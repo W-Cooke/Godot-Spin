@@ -34,7 +34,7 @@ func controller_look():
 			angle_list.resize(list_size)
 			angle_list.push_front(angle_diff)
 			list_size += 1
-	# check when list is long enough / enough time has passed
+		# check when list is long enough / enough time has passed
 		if angle_list.size() > 20:
 			# shoddy work but this removes the entry in the array that's <null>
 			angle_list.resize(list_size - 1)
