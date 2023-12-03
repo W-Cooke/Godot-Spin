@@ -1,8 +1,5 @@
 extends Node2D
 
-var is_stick_pressed = false
-var is_spinning = false
-
 @export var angle_threshold : float = 200.00
 
 var current_angle : float = 0.0
