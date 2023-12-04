@@ -14,11 +14,5 @@ offset_bottom = 40.0
 layout_mode = 0
 offset_right = 581.0
 offset_bottom = 128.0
-texture = ExtResource("1_0borb")
-
-[node name="Area2D" type="Area2D" parent="TextureRect/TextureRect"]
-position = Vector2(575, 57)
-
-[node name="Line2D" type="Line2D" parent="TextureRect/TextureRect/Area2D"]
-position = Vector2(-1, 10)
+rotation = -3.14159
 texture = ExtResource("1_0borb")

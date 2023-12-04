@@ -20,12 +20,12 @@ func controller_look():
 	# get joystick vector
 	var stick_rotation: Vector2 = Vector2(Input.get_joy_axis(0, JOY_AXIS_RIGHT_Y), Input.get_joy_axis(0, JOY_AXIS_RIGHT_X))
 	# reverse stick value (so it’s pointing the right way)
-	stick_rotation *= -1.0
+	#stick_rotation *= -1.0
 	if stick_rotation.length() > 0.2:
 		# convert to angle
 		current_angle = stick_rotation.angle()
 		current_angle = rad_to_deg(current_angle)
-		$TextureRect/TextureRect.rotation = deg_to_rad(-current_angle - 90)
+		$TextureRect/TextureRect.rotation = deg_to_rad(current_angle - 90)
 		# compare current angle to previous angle
 		var angle_diff = previous_angle - current_angle
 		# throw away angle differences if they’re too big a difference
