@@ -4,15 +4,16 @@ extends Node2D
 
 var current_angle : float = 0.0
 var previous_angle : float = 0.0
-var angle_list : Array = []
+var angle_array : Array = []
 var spinning_clockwise = false
 var spinning_anticlockwise = false
-var list_size = 1
+var array_size = 1
 
 signal spinning_signal
 
 func _process(_delta):
 	controller_look()
+	signal_bools()
 
 #code for spinning!
 func controller_look():
@@ -24,6 +25,7 @@ func controller_look():
 		# convert to angle
 		current_angle = stick_rotation.angle()
 		current_angle = rad_to_deg(current_angle)
+		$TextureRect/TextureRect.rotation = deg_to_rad(-current_angle - 90)
 		# compare current angle to previous angle
 		var angle_diff = previous_angle - current_angle
 		# throw away angle differences if they’re too big a difference
@@ -31,37 +33,46 @@ func controller_look():
 		if (angle_diff >= angle_threshold) or (angle_diff <= -angle_threshold):
 			pass
 		else:
-			angle_list.resize(list_size)
-			angle_list.push_front(angle_diff)
-			list_size += 1
+			angle_array.resize(array_size)
+			angle_array.push_front(angle_diff)
+			array_size += 1
 		# check when list is long enough / enough time has passed
-		if angle_list.size() > 20:
-			# shoddy work but this removes the entry in the array that's <null>
-			angle_list.resize(list_size - 1)
-			var mean = calculate_mean(angle_list)
+		if angle_array.size() > 21:
+			# shoddy work but this removes the entry at the end of the array that's <null> (which prevents mean from being calculated properly)
+			angle_array.resize(array_size - 1)
+			var mean = calculate_mean(angle_array)
 			# depending on if the average is positive or negative, plus past a certain threshold
 			# slow spinning will mean the threshold will not get met
 			if mean < -10:
 				spinning_anticlockwise = true
-				spinning_signal.emit("Anticlockwise")
 			elif mean > 10:
 				spinning_clockwise = true
-				spinning_signal.emit("Clockwise")
+			elif mean < 10 or mean > -10:
+				reset_bools()
 	else:
-		list_size = 1
-		angle_list.resize(list_size)
+		# if stick input doesn't pass dead zone, variables are reset.
+		array_size = 1
+		angle_array.resize(array_size)
 		reset_bools()
 		spinning_signal.emit("NO")
-	# set previous angle 
+	# finally, set previous frame's angle to current angle
 	previous_angle = current_angle
 
-func calculate_mean(list):
+func calculate_mean(arr):
 	var sum = 0.0
-	var count = list.size()
-	for i in list:
+	var count = arr.size()
+	for i in arr:
 		sum += i
 	var mean : float = sum / count
 	return mean
+
+func signal_bools():
+	if spinning_clockwise:
+		spinning_signal.emit("Clockwise")
+	elif spinning_anticlockwise:
+		spinning_signal.emit("Anticlockwise")
+	else:
+		spinning_signal.emit("NO")
 
 func reset_bools():
 	spinning_clockwise = false
