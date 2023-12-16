@@ -5,9 +5,9 @@ extends Node2D
 var current_angle : float = 0.0
 var previous_angle : float = 0.0
 var angle_array : Array = []
-var spinning_clockwise = false
-var spinning_anticlockwise = false
-var array_size = 1
+var spinning_clockwise : bool = false
+var spinning_anticlockwise : bool = false
+var array_size : int = 1
 
 signal spinning_signal
 
