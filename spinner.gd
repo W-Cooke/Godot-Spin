@@ -54,7 +54,6 @@ func controller_look():
 		array_size = 1
 		angle_array.resize(array_size)
 		reset_bools()
-		spinning_signal.emit("NO")
 	# finally, set previous frame's angle to current angle
 	previous_angle = current_angle
 
