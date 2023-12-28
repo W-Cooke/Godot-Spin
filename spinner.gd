@@ -37,9 +37,6 @@ func controller_look():
 			angle_array.push_front(angle_diff)
 			array_size += 1
 		# check when list is long enough / enough time has passed
-		# TODO: currently, if the stick starts not spinning and then spins without resetting to the deadzone
-		# 		then it takes too long to register a spin. a potential fix would be to periodically flush
-		#		the array often enough so that it feels more intuitive
 		if angle_array.size() > 21:
 			# shoddy work but this removes the entry at the end of the array that's <null> (which prevents mean from being calculated properly)
 			angle_array.resize(array_size - 1)
@@ -52,6 +49,10 @@ func controller_look():
 				spinning_clockwise = true
 			elif mean < 10 or mean > -10:
 				reset_bools()
+			# once the array reaches the threshold size and the logic has been applied the array is cleared
+			# this allows spinning to be detected in either direction without having to reset to deadzone to reset the array
+			array_size = 1
+			angle_array.resize(array_size)
 	else:
 		# if stick input doesn't pass dead zone, variables are reset.
 		array_size = 1

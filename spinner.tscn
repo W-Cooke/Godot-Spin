@@ -1,6 +1,5 @@
-[gd_scene load_steps=3 format=3 uid="uid://o5y1frrf2get"]
+[gd_scene load_steps=2 format=3 uid="uid://o5y1frrf2get"]
 
-[ext_resource type="Texture2D" uid="uid://dt1vjnfo4svcd" path="res://icon.svg" id="1_0borb"]
 [ext_resource type="Script" path="res://spinner.gd" id="1_jvbul"]
 
 [node name="Spinner" type="Node2D"]
@@ -15,4 +14,3 @@ layout_mode = 0
 offset_right = 581.0
 offset_bottom = 128.0
 rotation = -3.14159
-texture = ExtResource("1_0borb")
