@@ -21,6 +21,7 @@ func waggle():
 		#		clear array after certain number of frames have passed.
 		#		if array has gone up to size in that time, then we need to
 		#		find a way to calcuate how many 1s and -1s there are in the array
+		#		count(int) method for arrays will return an int of how many times it appears in the array
 
 func _process(_delta):
 	waggle()
