@@ -15,8 +15,12 @@ func waggle():
 		waggle_array.resize(20)
 		print(is_spinning)
 		waggle_array.resize(1)
-		#TODO: calculate threshold for detecting waggle, implement waggle script
-		#TODO: look up array methods to figure this out
+		# TODO: calculate threshold for detecting waggle, implement waggle script
+		# TODO: look up array methods to figure this out
+		# TODO: potential solution - only log to array if value is 1 or -1
+		#		clear array after certain number of frames have passed.
+		#		if array has gone up to size in that time, then we need to
+		#		find a way to calcuate how many 1s and -1s there are in the array
 
 func _process(_delta):
 	waggle()
