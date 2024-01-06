@@ -7,6 +7,10 @@ var is_spinning : bool = false
 var is_waggling : bool = false
 signal waggle_signal
 
+var one_count : int
+var minus_one_count : int
+@export var edge_threshold = 5
+
 func waggle():
 	var stick_rotation: Vector2 = Vector2(Input.get_joy_axis(0, JOY_AXIS_RIGHT_Y), Input.get_joy_axis(0, JOY_AXIS_RIGHT_X))
 	# if the stick is pushed all the way to either left or right the script will register it and add it to the 
@@ -17,6 +21,10 @@ func waggle():
 	if waggle_array.size() > array_size + 1:
 		# same hacky method to get ride of one null value at beginning of array ¯\_(ツ)_/¯
 		waggle_array.resize(array_size)
+		one_count = waggle_array.count(1)
+		minus_one_count = waggle_array.count(-1)
+		if one_count > edge_threshold and minus_one_count > edge_threshold:
+			print("Bloop!")
 		print(is_spinning)
 		waggle_array.resize(1)
 		# TODO: calculate threshold for detecting waggle, implement waggle script
