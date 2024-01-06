@@ -1,18 +1,22 @@
 extends Node
 
 #TODO: attach waggle script to check for waggle
-var waggle_array = []
+@export var array_size : int = 20
+var waggle_array = [0.0]
 var is_spinning : bool = false
 var is_waggling : bool = false
 signal waggle_signal
 
 func waggle():
 	var stick_rotation: Vector2 = Vector2(Input.get_joy_axis(0, JOY_AXIS_RIGHT_Y), Input.get_joy_axis(0, JOY_AXIS_RIGHT_X))
-	if stick_rotation.y > 0.2 or stick_rotation.y < -0.2:
+	# if the stick is pushed all the way to either left or right the script will register it and add it to the 
+	if stick_rotation.y == 1 or stick_rotation.y == -1:
 		waggle_array.push_front(stick_rotation.y)
-	if waggle_array.size() > 21:
+	else:
+		waggle_array.push_front(0.0)
+	if waggle_array.size() > array_size + 1:
 		# same hacky method to get ride of one null value at beginning of array ¯\_(ツ)_/¯
-		waggle_array.resize(20)
+		waggle_array.resize(array_size)
 		print(is_spinning)
 		waggle_array.resize(1)
 		# TODO: calculate threshold for detecting waggle, implement waggle script
@@ -25,6 +29,7 @@ func waggle():
 
 func _process(_delta):
 	waggle()
+	signal_bools()
 
 func reset_bools():
 	is_waggling = false
