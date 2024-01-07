@@ -1,15 +1,19 @@
 extends Node
 
-#TODO: attach waggle script to check for waggle
+#TODO: add notes
+
 @export var array_size : int = 20
 var waggle_array = [0.0]
 var is_spinning : bool = false
 var is_waggling : bool = false
+var state_change : bool = false
 signal waggle_signal
+
 
 var one_count : int
 var minus_one_count : int
-@export var edge_threshold = 5
+var threshold_reached : bool
+@export var edge_threshold : int = 4
 
 func waggle():
 	var stick_rotation: Vector2 = Vector2(Input.get_joy_axis(0, JOY_AXIS_RIGHT_Y), Input.get_joy_axis(0, JOY_AXIS_RIGHT_X))
@@ -18,22 +22,19 @@ func waggle():
 		waggle_array.push_front(stick_rotation.y)
 	else:
 		waggle_array.push_front(0.0)
-	if waggle_array.size() > array_size + 1:
-		# same hacky method to get ride of one null value at beginning of array ¯\_(ツ)_/¯
-		waggle_array.resize(array_size)
-		one_count = waggle_array.count(1)
-		minus_one_count = waggle_array.count(-1)
-		if one_count > edge_threshold and minus_one_count > edge_threshold:
-			print("Bloop!")
-		print(is_spinning)
+	if waggle_array.size() > array_size:
+		one_count = waggle_array.count(1.0)
+		minus_one_count = waggle_array.count(-1.0)
+		threshold_reached = (one_count > edge_threshold and minus_one_count > edge_threshold)
+		if threshold_reached:
+			print("HOOOUUGHH IT'S A WAGGLE!")
+			is_waggling = true
+			state_change = true
+		elif not threshold_reached and state_change:
+			state_change = false
+		else:
+			reset_bools()
 		waggle_array.resize(1)
-		# TODO: calculate threshold for detecting waggle, implement waggle script
-		# TODO: look up array methods to figure this out
-		# TODO: potential solution - only log to array if value is 1 or -1
-		#		clear array after certain number of frames have passed.
-		#		if array has gone up to size in that time, then we need to
-		#		find a way to calcuate how many 1s and -1s there are in the array
-		#		count(int) method for arrays will return an int of how many times it appears in the array
 
 func _process(_delta):
 	waggle()
@@ -41,10 +42,11 @@ func _process(_delta):
 
 func reset_bools():
 	is_waggling = false
+	threshold_reached = false
 
 func signal_bools():
 	if is_waggling:
-		waggle_signal.emit("YES")
+		waggle_signal.emit("WAGGLIN'")
 	else:
 		waggle_signal.emit("NO")
 

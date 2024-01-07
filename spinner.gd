@@ -4,7 +4,7 @@ extends Node2D
 
 var current_angle : float = 0.0
 var previous_angle : float = 0.0
-var angle_array : Array = []
+var angle_array : Array = [0.0]
 var spinning_clockwise : bool = false
 var spinning_anticlockwise : bool = false
 var array_size : int = 1
@@ -21,7 +21,7 @@ func controller_look():
 	var stick_rotation: Vector2 = Vector2(Input.get_joy_axis(0, JOY_AXIS_RIGHT_Y), Input.get_joy_axis(0, JOY_AXIS_RIGHT_X))
 	# reverse stick value (so it’s pointing the right way)
 	#stick_rotation *= -1.0
-	if stick_rotation.length() > 0.2:
+	if stick_rotation.length() > 0.3:
 		# convert to angle
 		current_angle = stick_rotation.angle()
 		current_angle = rad_to_deg(current_angle)
@@ -37,16 +37,16 @@ func controller_look():
 			angle_array.push_front(angle_diff)
 			array_size += 1
 		# check when list is long enough / enough time has passed
-		if angle_array.size() > 21:
-			# shoddy work but this removes the entry at the end of the array that's <null> (which prevents mean from being calculated properly)
-			angle_array.resize(array_size - 1)
+		if angle_array.size() > 20:
 			var mean = calculate_mean(angle_array)
 			# depending on if the average is positive or negative, plus past a certain threshold
 			# slow spinning will mean the threshold will not get met
 			if mean < -10:
 				spinning_anticlockwise = true
+				spinning_clockwise = false
 			elif mean > 10:
 				spinning_clockwise = true
+				spinning_anticlockwise = false
 			elif mean < 10 or mean > -10:
 				reset_bools()
 			# once the array reaches the threshold size and the logic has been applied the array is cleared
@@ -80,3 +80,7 @@ func signal_bools():
 func reset_bools():
 	spinning_clockwise = false
 	spinning_anticlockwise = false
+
+
+func _on_waggler_waggle_signal():
+	pass # Replace with function body.

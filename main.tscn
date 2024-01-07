@@ -50,3 +50,4 @@ horizontal_alignment = 1
 [connection signal="spinning_signal" from="Spinner" to="." method="_on_spinner_spinning_signal"]
 [connection signal="spinning_signal" from="Spinner" to="Waggler" method="_on_spinner_spinning_signal"]
 [connection signal="waggle_signal" from="Waggler" to="." method="_on_waggler_waggle_signal"]
+[connection signal="waggle_signal" from="Waggler" to="Spinner" method="_on_waggler_waggle_signal"]
